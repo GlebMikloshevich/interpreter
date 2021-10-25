@@ -58,8 +58,7 @@ class Interpreter:
                 continue
 
             if self._current_char.isdigit():
-                char = self._current_char
-                return Token(TokenType.INTEGER, self._number())
+                return Token(TokenType.FLOAT, self._number())
 
             if self._current_char == "+":
                 char = self._current_char
@@ -83,8 +82,8 @@ class Interpreter:
     def _expr(self) -> float:
         self._current_token = self._next_token()
         left = self._current_token
-        if left.type_ == TokenType.INTEGER:
-            self._check_token_type(TokenType.INTEGER)
+        if left.type_ == TokenType.FLOAT:
+            self._check_token_type(TokenType.FLOAT)
         else:
             self._check_token_type(TokenType.FLOAT)
 
@@ -94,8 +93,8 @@ class Interpreter:
         else:
             self._check_token_type(TokenType.MINUS)
         right = self._current_token
-        if right.type_ == TokenType.INTEGER:
-            self._check_token_type(TokenType.INTEGER)
+        if right.type_ == TokenType.FLOAT:
+            self._check_token_type(TokenType.FLOAT)
         else:
             self._check_token_type(TokenType.FLOAT)
 
