@@ -33,11 +33,22 @@ class Interpreter:
         while self._current_char and self._current_char == ' ':
             self._forward()
 
-    def _integer(self):
+    def _number(self):
         result: list = []
         while self._current_char and self._current_char.isdigit():
             result.append(self._current_char)
             self._forward()
+
+        if self._current_char and self._current_char == '.':
+            result.append('.')
+            self._forward()
+            if self._current_char and self._current_char.isdigit():
+                while self._current_char and self._current_char.isdigit():
+                    result.append(self._current_char)
+                    self._forward()
+            else:
+                raise InterpreterException('invalid number')
+
         return ''.join(result)
 
     def _next_token(self) -> Token:
@@ -48,7 +59,7 @@ class Interpreter:
 
             if self._current_char.isdigit():
                 char = self._current_char
-                return Token(TokenType.INTEGER, self._integer())
+                return Token(TokenType.INTEGER, self._number())
 
             if self._current_char == "+":
                 char = self._current_char
@@ -69,20 +80,28 @@ class Interpreter:
         else:
             raise InterpreterException('invalid token order')
 
-    def _expr(self) -> int:
+    def _expr(self) -> float:
         self._current_token = self._next_token()
         left = self._current_token
-        self._check_token_type(TokenType.INTEGER)
+        if left.type_ == TokenType.INTEGER:
+            self._check_token_type(TokenType.INTEGER)
+        else:
+            self._check_token_type(TokenType.FLOAT)
+
         op = self._current_token
         if op.type_ == TokenType.PLUS:
             self._check_token_type(TokenType.PLUS)
         else:
             self._check_token_type(TokenType.MINUS)
         right = self._current_token
-        self._check_token_type(TokenType.INTEGER)
+        if right.type_ == TokenType.INTEGER:
+            self._check_token_type(TokenType.INTEGER)
+        else:
+            self._check_token_type(TokenType.FLOAT)
+
         if op.type_ == TokenType.PLUS:
-            return int(left.value) + int(right.value)
+            return float(left.value) + float(right.value)
         elif op.type_ == TokenType.MINUS:
-            return int(left.value) - int(right.value)
+            return float(left.value) - float(right.value)
 
         raise InterpreterException('bad operation')
