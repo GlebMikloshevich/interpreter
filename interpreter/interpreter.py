@@ -33,14 +33,22 @@ class Interpreter:
         while self._current_char and self._current_char == ' ':
             self._forward()
 
+    def _integer(self):
+        result: list = []
+        while self._current_char and self._current_char.isdigit():
+            result.append(self._current_char)
+            self._forward()
+        return ''.join(result)
+
     def _next_token(self) -> Token:
         while self._current_char is not None:
             if self._current_char == ' ':
                 self._skip()
+                continue
+
             if self._current_char.isdigit():
                 char = self._current_char
-                self._forward()
-                return Token(TokenType.INTEGER, char)
+                return Token(TokenType.INTEGER, self._integer())
 
             if self._current_char == "+":
                 char = self._current_char
