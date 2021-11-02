@@ -6,6 +6,8 @@ class TokenType(Enum):
     FLOAT = auto
     PLUS = auto()
     MINUS = auto()
+    MUL = auto()
+    DIV = auto()
     EOS = auto()
 
 
