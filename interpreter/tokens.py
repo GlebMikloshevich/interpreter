@@ -3,12 +3,15 @@ from enum import Enum, auto
 
 class TokenType(Enum):
     INTEGER = auto()
-    FLOAT = auto
+    FLOAT = auto()
     PLUS = auto()
     MINUS = auto()
     MUL = auto()
     DIV = auto()
     EOS = auto()
+
+    LPAREN = auto()
+    RPAREN = auto()
 
 
 class Token:

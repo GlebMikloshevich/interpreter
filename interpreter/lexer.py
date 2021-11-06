@@ -12,7 +12,7 @@ class Lexer():
         self._current_char: str = None
         self._text: str = None
 
-    def next_token(self) -> Token:
+    def next(self) -> Token:
         while self._current_char is not None:
             if self._current_char == ' ':
                 self._skip()
@@ -30,6 +30,26 @@ class Lexer():
                 char = self._current_char
                 self._forward()
                 return Token(TokenType.MINUS, char)
+
+            if self._current_char == "*":
+                char = self._current_char
+                self._forward()
+                return Token(TokenType.MUL, char)
+
+            if self._current_char == "/":
+                char = self._current_char
+                self._forward()
+                return Token(TokenType.DIV, char)
+
+            if self._current_char == "(":
+                char = self._current_char
+                self._forward()
+                return Token(TokenType.LPAREN, char)
+
+            if self._current_char == ")":
+                char = self._current_char
+                self._forward()
+                return Token(TokenType.RPAREN, char)
 
             raise LexerException(f'bad token {self._current_char}')
         return Token(TokenType.EOS, None)
