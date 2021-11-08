@@ -51,6 +51,11 @@ class Lexer():
                 self._forward()
                 return Token(TokenType.RPAREN, char)
 
+            if self._current_char == "^":
+                char = self._current_char
+                self._forward()
+                return Token(TokenType.POW, char)
+
             raise LexerException(f'bad token {self._current_char}')
         return Token(TokenType.EOS, None)
 
